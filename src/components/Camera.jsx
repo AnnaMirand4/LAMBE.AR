@@ -1,24 +1,48 @@
-import React, { useRef, useEffect, useState } from "react";
-import * as tf from "@tensorflow/tfjs";
+import { useRef, useEffect, useState } from "react";
+import * as tmImage from "@teachablemachine/image";
 import Lottie from "react-lottie";
-import animationData from "../assets/peixe.json";
+import style from "../style/camera.module.css";
+import { useNavigate } from "react-router-dom";
+import { IoArrowBackCircleOutline } from "react-icons/io5";
+
+// import das animações
+import lambe1Animation from "../assets/lambeAnimation-1.json";
+import lambe2Animation from "../assets/lambeAnimation-2.json";
+import lambe3Animation from "../assets/lambeAnimation-3.json";
+import lambe4Animation from "../assets/lambeAnimation-4.json";
+
+// Mapeamento das classes para as animações
+const animations = [
+  { name: "Lambe1", data: lambe1Animation },
+  { name: "Lambe2", data: lambe2Animation },
+  { name: "Lambe3", data: lambe3Animation },
+  { name: "Lambe4", data: lambe4Animation },
+];
 
 const Camera = () => {
   const videoRef = useRef(null);
   const [model, setModel] = useState(null);
-  const [objectDetected, setObjectDetected] = useState(false);
+  const [label, setLabel] = useState(null);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  // Carrega o modelo do Teachable Machine ao montar o componente
+  // Carrega o modelo
   useEffect(() => {
     const loadModel = async () => {
-      const modelURL = '/model/model.json';
+      const modelURL = "/model/model.json";
+      const metadataURL = "/model/metadata.json";
+
       try {
-        const loadedModel = await tf.loadLayersModel(modelURL);
+        console.log("⏳ Carregando modelo...");
+        const loadedModel = await tmImage.load(modelURL, metadataURL);
         setModel(loadedModel);
-      } catch (error) {
-        console.error("Erro ao carregar o modelo:", error);
+        console.log("✅ Modelo carregado com sucesso!");
+      } catch (err) {
+        console.error("❌ Erro ao carregar o modelo:", err);
+        setError("Não foi possível carregar o modelo. Verifique o caminho e os arquivos.");
       }
     };
+
     loadModel();
   }, []);
 
@@ -32,83 +56,94 @@ const Camera = () => {
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
-      } catch (error) {
-        console.error("Erro ao acessar a câmera:", error);
+      } catch (err) {
+        console.error("❌ Erro ao acessar a câmera:", err);
+        setError("Não foi possível acessar a câmera. Verifique as permissões do navegador.");
       }
     };
+
     enableCamera();
   }, []);
 
-  // Detecta a imagem específica continuamente usando o modelo do Teachable Machine
+  // Faz a detecção somente após o vídeo estar pronto
   useEffect(() => {
     if (model && videoRef.current) {
-      const detectImage = async () => {
-        tf.engine().startScope();
+      const video = videoRef.current;
 
-        const video = videoRef.current;
-        const inputTensor = tf.browser.fromPixels(video)
-          .resizeBilinear([224, 224])
-          .expandDims(0);
-
-        const predictions = model.predict(inputTensor);
-        const predictionData = predictions.dataSync();
-        
-        // Ajuste o limiar para detecção e verifique o valor da previsão
-        const isDetected = predictionData[0] > 0.9;
-        
-        setObjectDetected(isDetected);
-
-        tf.dispose([inputTensor, predictions]);
-
-        tf.engine().endScope();
+      const waitForVideo = () => {
+        if (video.readyState >= 2) {
+          startPrediction();
+        } else {
+          setTimeout(waitForVideo, 300);
+        }
       };
 
-      const interval = setInterval(detectImage, 500);
-      return () => clearInterval(interval);
+      const startPrediction = () => {
+        const predictLoop = async () => {
+          if (!video || video.readyState < 2) return;
+
+          try {
+            const predictions = await model.predict(video);
+            const highest = predictions.reduce((prev, current) =>
+              prev.probability > current.probability ? prev : current
+            );
+
+            if (highest.probability > 0.9) {
+              setLabel(highest.className);
+            } else {
+              setLabel(null);
+            }
+          } catch (err) {
+            console.error("⚠️ Erro ao processar a predição:", err);
+          }
+
+          requestAnimationFrame(predictLoop);
+        };
+
+        predictLoop();
+      };
+
+      waitForVideo();
     }
   }, [model]);
 
-  useEffect(() => {
-    console.log("Objeto detectado:", objectDetected); // Verifique se o estado está mudando
-  }, [objectDetected]);
-
-  // Configurações para a animação Lottie
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
+  const currentAnimation = animations.find((a) => a.name === label);
 
   return (
-    <div style={{ position: "relative" }}>
+    <div className={style.cameraContainer}>
+      {/* Mensagem de erro */}
+      {error && <div className={style.errorMessage}>{error}</div>}
+
+      {/* Vídeo em tela cheia */}
       <video
         ref={videoRef}
         autoPlay
         playsInline
         muted
-        style={{ width: "100%", height: "100%" }}
+        className={style.cameraVideo}
       />
-      {/* Exibe a animação Lottie se a imagem específica for detectada */}
-      {objectDetected && (
-        <div
-          style={{
-            position: "absolute",
-            top: "0",
-            left: "0",
-            width: "100%",
-            height: "100%",
-            pointerEvents: "none",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Lottie options={defaultOptions} height={400} width={400} />
+
+      {/* Animação Lottie sobre o vídeo */}
+      {currentAnimation && (
+        <div className={style.lottieOverlay}>
+          <Lottie
+            options={{
+              loop: true,
+              autoplay: true,
+              animationData: currentAnimation.data,
+              rendererSettings: { preserveAspectRatio: "xMidYMid slice" },
+            }}
+            height={400}
+            width={400}
+          />
         </div>
       )}
+
+      {/* Botão de voltar */}
+      <button onClick={() => navigate("/")} className={style.backButton}>
+        <IoArrowBackCircleOutline size={24} />
+        <span>Voltar</span>
+      </button>
     </div>
   );
 };
