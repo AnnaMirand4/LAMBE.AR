@@ -45,7 +45,7 @@ O projeto é uma colaboração entre arte e código:
 
 Este repositório contém o código-fonte da aplicação web de Realidade Aumentada:
 
-![Estrutura de pastas](../assets/estururaPastas.png)
+![Estrutura de pastas](./assets/estururaPastas.png)
 
 ```
 
