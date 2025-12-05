@@ -1,4 +1,4 @@
-import Lottie from "react-lottie";
+/*import Lottie from "react-lottie";
 import animationData from "../assets/peixe.svg"
 
 const LottieAnimation = () => {

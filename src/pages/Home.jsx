@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import style from "../style/home.module.css"
 import { BsPatchCheck } from "react-icons/bs";
+import { FaCamera } from "react-icons/fa";
 
 const Home = () => {
     const navigate = useNavigate()
@@ -44,6 +45,7 @@ const Home = () => {
                     da discussão, visite nosso Instagram e deixe seus comentários:
                 </p>    
 
+
             </section>
 
             <a
@@ -55,6 +57,7 @@ const Home = () => {
                 Visite o Instagram
             </a>
 
+            
             <h2 className={style.subTitle}>
                     Explore as animações do projeto Lambe.ar
             </h2>
@@ -74,8 +77,20 @@ const Home = () => {
             <button
             onClick={handleStart}
             className={style.buttonCamera}>
-                Abrir Camera
+                Abrir Camera <FaCamera />
             </button>
+
+            <div className={style.apoio}>
+                <p>
+                    Este projeto foi contemplado nos Editais da Política Nacional Aldir Blanc Bahia e tem apoio financeiro do Governo do Estado da Bahia, por meio da Secretaria de Cultura do Estado via PNAB, direcionada pelo Ministério da Cultura - Governo Federal. A iniciativa é também contemplada pela Política Nacional Cultura Viva.
+                </p>
+                
+            </div>
+            <img
+                    className={style.imgRegua}
+                    src="/reguaPNAB.png" alt="regua com os apoios da PNAB"
+            />
+
         </main>
 
         <footer className={style.footer}>

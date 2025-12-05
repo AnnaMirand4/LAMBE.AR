@@ -47,14 +47,14 @@
   padding: 1.2rem;
   background-color: #ED1B24;
   border-radius: 30px;
-  border: #333333;
-  box-shadow: 5px 10px #333333;
+  border: 2px #333333;
+  box-shadow: 5px 10px 0px 0px #333333;
   text-decoration: none;
   font-family: "Bebas Neue", sans-serif;
   font-size: 1.2rem;
   color: #333333;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transition 0.1s ease;
 }
 
 .instagramButton:hover {
@@ -64,8 +64,30 @@
 .instagramButton:active {
   background-color: lightblue;
   transform: translateY(1px); /* Simula o botão sendo pressionado */
+  box-shadow: 5px 10px 0px 0px #333333;
 }
 
+.apoio {
+  width: 80%;
+  padding: 1rem;
+  border: solid 5px #F1D301;
+  box-shadow: 5px 10px #333333;
+  margin-top: 2rem;
+  text-align: justify;
+  border-radius: 15px;
+}
+
+.apoio p{
+  font-family: "Inter", sans-serif;
+  padding-bottom: 1rem;
+  color: #333333;
+  font-size: 1.2rem;
+}
+
+.imgRegua{
+  margin-top: 2rem;
+  width: 100%;
+}
 
 .steps{
   width: 80%;
@@ -74,7 +96,7 @@
   border: solid 5px #235789 ; 
   border-radius: 15px ;
   background-color: #F1D301;
-  box-shadow: 5px 10px #235789;
+  box-shadow: 5px 10px #333333;
 }
 
 .steps li{
@@ -94,7 +116,7 @@
 
 .buttonCamera{ 
   padding: 1.2rem;
-  margin-top: 1.2rem;
+  margin-top: 1.5rem;
   background-color: #ED1B24;
   border-radius: 30px;
   border: #333333;
@@ -106,7 +128,7 @@
 }
 
 .footer{
-  margin-top: 3rem;
+  margin-top: 2rem;
   display: flex;
   justify-content: center;
   background-color: #235789;
