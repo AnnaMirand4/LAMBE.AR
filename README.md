@@ -1,4 +1,4 @@
-<img src="./public/logoLambe.png" alt="Descrição" width="600" height="400">
+<img src="./public/logoLambe.png" alt="Logo do projeto" width="600" height="400">
 
 # LAMBE.AR: Arte Urbana, Realidade Aumentada e a Desconstrução de Masculinidades Tóxicas
 
@@ -46,7 +46,7 @@ O projeto é uma colaboração entre arte e código:
 Este repositório contém o código-fonte da aplicação web de Realidade Aumentada:
 
 ```
-![Estrutura de pastas](./assets/estruturaPastas.png)
+![Estrutura de pastas](../assets/estruturaPastas.png)
 
 ## Como Rodar o Projeto (Desenvolvimento)
 
