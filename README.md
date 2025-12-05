@@ -45,7 +45,7 @@ O projeto é uma colaboração entre arte e código:
 
 Este repositório contém o código-fonte da aplicação web de Realidade Aumentada:
 
-<img src="./public/estruturaPastas.png" alt="Estrutura das Pastas">
+<img src="./public/estuturaPastas.png" alt="Estrutura das Pastas">
 
 ```
 
@@ -75,7 +75,7 @@ O projeto utiliza o **Vite** como *bundler* e o **React** para a interface.
 
 O projeto estará acessível em `http://localhost:5173` (ou outra porta, conforme o Vite). Para testar a Realidade Aumentada, você precisará de um marcador (disponível na pasta `public/`) e de um dispositivo móvel.
 
----
+```
 Desenvolvido por Anna Caroline Miranda :cherry_blossom:
 
 ### :speech_balloon: Entre em contato :dizzy:
