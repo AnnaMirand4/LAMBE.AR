@@ -45,8 +45,9 @@ O projeto é uma colaboração entre arte e código:
 
 Este repositório contém o código-fonte da aplicação web de Realidade Aumentada:
 
+<img src="./public/estruturaPastas.png" alt="Estrutura das Pastas">
+
 ```
-<img src="./public/logoLambe.png" alt="Estrutura das pastas">
 
 ## Como Rodar o Projeto (Desenvolvimento)
 
